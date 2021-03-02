@@ -2,6 +2,10 @@
 
 class KamilOciepa{
 	public static void main(String [] a){
+		
+		
+	}
+	private static void tablica2x2{
 		int [][] tab2d = new int [2][2];
 		tab2d [0][0] = 1;
 		tab2d [0][1] = 2;
@@ -12,6 +16,6 @@ class KamilOciepa{
             System.out.println(tab2d[i][j]);
 			}
 		}
-	}	
-
+	
+    } 
 }
