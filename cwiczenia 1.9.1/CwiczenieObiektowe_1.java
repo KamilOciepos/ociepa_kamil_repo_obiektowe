@@ -7,5 +7,9 @@ class CwiczenieObiektowe_1{
 		
 		Logowanie lg = new Logowanie("akronim","haselko");
 		System.out.println(lg);
+		
+		Kolo kolo = new Kolo(4);
+		kolo.pole_kola();
+		kolo.obwod_kola();
 	}
 }
