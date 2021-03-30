@@ -11,5 +11,11 @@ class CwiczenieObiektowe_1{
 		Kolo kolo = new Kolo(4);
 		kolo.pole_kola();
 		kolo.obwod_kola();
+		
+		PolaObwody pola = new PolaObwody(2,4);
+		pola.PoleKwadratu();
+		pola.ObwodKwadratu();
+		pola.PoleProstokata();
+		pola.ObwodProstokata();
 	}
 }
