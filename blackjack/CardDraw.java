@@ -1,9 +1,6 @@
 
 class CardDraw {
 
-    public String nazwakarty;
-    public int wartosc;
-
     /*
      * public static void CardDraw() {
      * String[] cardname = { "as", "król", "dama", "walet", "dziesięc", "dziewięć",
