@@ -1,5 +1,9 @@
 public class GameLogic {
-    public static void gamelogic() {
+
+    public String nazwakarty;
+    public int wartosc;
+
+    public GameLogic() {
 
     }
 }
