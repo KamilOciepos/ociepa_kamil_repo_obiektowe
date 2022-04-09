@@ -12,23 +12,26 @@ import java.util.Scanner;
 
 public class Main {
 
+    public static int liczbagraczy;
+    public static int iloscrund;
+
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
         String losu = "upo";
         Random rand = new Random();
-        Kategorie kategorie = new Kategorie();
 
         System.out.println("Witaj w grze koło fortuny");
         System.out.println("Wybierz liczbe graczy: ");
 
-        int liczbagraczy = sc.nextInt();
+        liczbagraczy = sc.nextInt();
 
         System.out.println("Wybierz ilośc rund: ");
-        int iloscrund = sc.nextInt();
+        iloscrund = sc.nextInt();
 
         // przypisywanie do konstruktorow itd
-        int[] punktygracza = new int[3];
+        PlayerPoints playerPoints = new PlayerPoints();
+
         GameSettings gameSettings = new GameSettings(liczbagraczy, iloscrund);
         gameSettings.setLiczbagraczy(liczbagraczy);
         gameSettings.setIloscrund(iloscrund);
@@ -49,8 +52,9 @@ public class Main {
                     losu = losu.toUpperCase();
 
                     if (losu.equals("L")) {
-                        String wylosowanakategoria = kategorie.losowanie(); // losuje se kategorie z osobnego pliku
-                        System.out.println("Wylosowano kategorie: " + wylosowanakategoria);
+                        SavingCategory savingCategory = new SavingCategory();
+                        System.out.println("Wylosowano kategorie: " + savingCategory.getWylosowanakategoria());
+
                         System.out.println("Kliknij E zeby wylosować poziom trudnosci");
                         String trudlosu = "upo";
 
@@ -66,89 +70,69 @@ public class Main {
                                 int trudnosc = rand.nextInt(9 - 1);
 
                                 // sciezki do plikow bedziesz wiedzial ocb ale sram komentarzami
-                                String sciezka = "pytania/" + wylosowanakategoria + ".txt";
-                                String sciezkaodp = "pytania/" + wylosowanakategoria + "Odp.txt";
-                                if (trudnosc < 3) {
-                                    // miejsce pytania zeby sobie je wziac z pliku
-                                    int n = trudnosc;
-                                    try {
+                                String sciezka = "pytania/" + savingCategory.getWylosowanakategoria() + ".txt";
+                                String sciezkaodp = "pytania/" + savingCategory.getWylosowanakategoria() + "Odp.txt";
+                                try {
 
-                                        // bierze ci tutaj konkretna linijke z pliku
-                                        String pytanie = Files.readAllLines(Paths.get(sciezka)).get(n);
+                                    // bierze ci tutaj konkretna linijke z pliku
+                                    String pytanie = Files.readAllLines(Paths.get(sciezka)).get(trudnosc);
+
+                                    // bierze ci tutaj konkretna linijke z pliku
+                                    String odpowiedz = Files.readAllLines(Paths.get(sciezkaodp)).get(trudnosc);
+
+                                    if (trudnosc < 3) {
                                         System.out.println("Wylosowales latwe pytanie");
                                         System.out.println("Twoje pytanie to:");
                                         System.out.println(pytanie);
-
-                                        // bierze ci tutaj konkretna linijke z pliku
-                                        String odpowiedz = Files.readAllLines(Paths.get(sciezkaodp)).get(n);
                                         System.out.println("Podaj odpowiedz: ");
                                         String odpowiedzuzyt = sc.next();
                                         odpowiedzuzyt = odpowiedzuzyt.toUpperCase();
                                         if (odpowiedzuzyt.equals(odpowiedz)) {
                                             System.out.println("Podales dobra odpowiedz");
                                             // dodawanie punktow graczowi
-                                            punktygracza[i - 1] = punktygracza[i - 1] + 1;
+                                            playerPoints.punktygracza[i - 1] = playerPoints.punktygracza[i - 1] + 1;
                                         } else {
                                             System.out.println("Podales zla odpowiedz");
 
                                         }
-                                    } catch (IOException e) {
-                                        System.out.println(e);
-                                    }
 
-                                } else if (trudnosc > 2 && trudnosc < 6) {
-                                    // miejsce pytania zeby sobie je wziac z pliku
-                                    int n = trudnosc;
-                                    try {
-                                        // bierze ci tutaj konkretna linijke z pliku
-                                        String pytanie = Files.readAllLines(Paths.get(sciezka)).get(n);
+                                    } else if (trudnosc > 2 && trudnosc < 6) {
                                         System.out.println("Wylosowales srednie pytanie");
                                         System.out.println("Twoje pytanie to:");
                                         System.out.println(pytanie);
 
-                                        // bierze ci tutaj konkretna linijke z pliku
-                                        String odpowiedz = Files.readAllLines(Paths.get(sciezkaodp)).get(n);
                                         System.out.println("Podaj odpowiedz: ");
                                         String odpowiedzuzyt = sc.next();
                                         odpowiedzuzyt = odpowiedzuzyt.toUpperCase();
                                         if (odpowiedzuzyt.equals(odpowiedz)) {
                                             System.out.println("Podales dobra odpowiedz");
                                             // dodawanie punktow graczowi
-                                            punktygracza[i - 1] = punktygracza[i - 1] + 2;
+                                            playerPoints.punktygracza[i - 1] = playerPoints.punktygracza[i - 1] + 2;
                                         } else {
                                             System.out.println("Podales zla odpowiedz");
                                         }
 
-                                    } catch (IOException e) {
-                                        System.out.println(e);
-                                    }
+                                    } else {
 
-                                } else {
-                                    // miejsce pytania zeby sobie je wziac z pliku
-                                    int n = trudnosc;
-                                    try {
-                                        // bierze ci tutaj konkretna linijke z pliku
-                                        String pytanie = Files.readAllLines(Paths.get(sciezka)).get(n);
                                         System.out.println("Wylosowales trudne pytanie");
                                         System.out.println("Twoje pytanie to:");
                                         System.out.println(pytanie);
 
                                         // bierze ci tutaj konkretna linijke z pliku
-                                        String odpowiedz = Files.readAllLines(Paths.get(sciezkaodp)).get(n);
                                         System.out.println("Podaj odpowiedz: ");
                                         String odpowiedzuzyt = sc.next();
                                         odpowiedzuzyt = odpowiedzuzyt.toUpperCase();
                                         if (odpowiedzuzyt.equals(odpowiedz)) {
                                             System.out.println("Podales dobra odpowiedz");
                                             // dodawanie punktow graczowi
-                                            punktygracza[i - 1] = punktygracza[i - 1] + 3;
+                                            playerPoints.punktygracza[i - 1] = playerPoints.punktygracza[i - 1] + 3;
                                         } else {
                                             System.out.println("Podales zla odpowiedz");
                                         }
 
-                                    } catch (IOException e) {
-                                        System.out.println(e);
                                     }
+                                } catch (IOException e) {
+                                    System.out.println(e);
                                 }
 
                             } else {
@@ -165,39 +149,7 @@ public class Main {
                 losu = "upo";
             }
         }
-
-        // wyswietlanie ilosci punktow
-        System.out.println("Ilosc punktow: ");
-        int najpunktow = -1; // ustawione na -1 zeby zbierało najwieksza ilosc punktow
-        int wygrany = 0;
-        List<Integer> miejsca = new ArrayList<Integer>(); // do sortowania punktow arraylist
-
-        for (int i = 1; i <= gameSettings.liczbagraczy; i++) {
-
-            System.out.println("Gracz nr " + (i) + " z iloscia punktow " + punktygracza[i - 1]);
-            miejsca.add(punktygracza[i - 1]);
-            if (punktygracza[i - 1] > najpunktow) {
-                najpunktow = punktygracza[i - 1]; // nadpisuje tutaj ta najwieksza ilosc punktow
-                wygrany = i; // dodaje gracza ktory ma najwieksza ilosc punktow jako wygranego
-
-            } else {
-
-            }
-
-        }
-        //
-
-        // sortowanie punktow
-        miejsca.sort(Collections.reverseOrder());
-
-        for (int i = 1; i <= gameSettings.liczbagraczy; i++) {
-            System.out.println(i + ". " + miejsca.get(i - 1));
-
-        }
-        //
-
-        System.out.println("Wygrywa gracz nr " + wygrany);
-
+        ScoreBoard.scoreBoard(playerPoints.punktygracza);
     }
 
 }
